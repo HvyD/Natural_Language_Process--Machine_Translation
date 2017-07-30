@@ -11781,7 +11781,7 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 
 <span class="c1"># Check TensorFlow Version</span>
-<span class="k">assert</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">),</span> 
+<span class="k">assert</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">LooseVersion</span><span class="p">(</span><span class="s1">&#39;1.0&#39;</span><span class="p">),</span> <span class="s1">&#39;Please use TensorFlow version 1.0 or newer&#39;</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;TensorFlow Version: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">__version__</span><span class="p">))</span>
 
 <span class="c1"># Check for a GPU</span>
@@ -11801,7 +11801,7 @@ div#notebook {
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>TensorFlow Version: 1.1.0
+<pre>TensorFlow Version: 1.2.1
 Default GPU Device: /gpu:0
 </pre>
 </div>
@@ -11818,10 +11818,11 @@ Default GPU Device: /gpu:0
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">helper</span>
 
+
 <span class="c1"># Load English data</span>
-<span class="n">english_sentences</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;small_vocab_en&#39;</span><span class="p">)</span>
+<span class="n">english_sentences</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;data/small_vocab_en&#39;</span><span class="p">)</span>
 <span class="c1"># Load French data</span>
-<span class="n">french_sentences</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;small_vocab_fr&#39;</span><span class="p">)</span>
+<span class="n">french_sentences</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="s1">&#39;data/small_vocab_fr&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dataset Loaded&#39;</span><span class="p">)</span>
 </pre></div>
@@ -11905,6 +11906,7 @@ small_vocab_fr Line 2:  les états-unis est généralement froid en juillet , et
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">collections</span>
 
+
 <span class="n">english_words_counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">([</span><span class="n">word</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">english_sentences</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
 <span class="n">french_words_counter</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">([</span><span class="n">word</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">french_sentences</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()])</span>
 
@@ -11952,20 +11954,15 @@ small_vocab_fr Line 2:  les états-unis est généralement froid en juillet , et
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>For comparison, <em>Alice's Adventures in Wonderland</em> contains 2,766 unique words of a total of 15,500 words.</p>
-<h2 id="Preprocess">Preprocess<a class="anchor-link" href="#Preprocess">&#182;</a></h2><p>In order for a Neural Network to understand its text Data Input and make Predictions, we first convert Text into Sequences of Integers, then add Padding using these pre-processing methods:</p>
+<h2 id="Preprocess">Preprocess<a class="anchor-link" href="#Preprocess">&#182;</a></h2><p>For this project, you won't use text data as input to your model. Instead, you'll convert the text into sequences of integers using the following preprocess methods:</p>
 <ol>
-<li>Tokenize the Words into IDs<ul>
-<li>Text data like "dog" is a Sequence of ASCII character encodings. Neural Networks are a series of Multiplication and Addition operations, so Input Data must be number(s).</li>
-</ul>
-</li>
-<li>Add Padding (converts all Sequences to same length).</li>
+<li>Tokenize the words into ids</li>
+<li>Add padding to make all the sequences the same length.</li>
 </ol>
-<p>Note: Text data is NOT used as Input to the Model</p>
-<ul>
-<li>Character IDs Definition - Convert each character into number. Used for character level models that generate text predictions for each character </li>
-<li>Word ID Definition - convert each word into number. Word Level Models uses Word IDs that generate text predictions for each word. Word Level Models are lower complexity so tend to learn better.</li>
-</ul>
-<h3 id="Tokenize-(IMPLEMENTATION)">Tokenize (IMPLEMENTATION)<a class="anchor-link" href="#Tokenize-(IMPLEMENTATION)">&#182;</a></h3><p>We will use Word Level Models and convert each sentence into a Sequence of Words IDs using Keras's <a href="https://keras.io/preprocessing/text/#tokenizer"><code>Tokenizer</code></a> function to tokenize <code>english_sentences</code> and <code>french_sentences</code> below.</p>
+<p>Time to start preprocessing the data...</p>
+<h3 id="Tokenize-(IMPLEMENTATION)">Tokenize (IMPLEMENTATION)<a class="anchor-link" href="#Tokenize-(IMPLEMENTATION)">&#182;</a></h3><p>For a neural network to predict on text data, it first has to be turned into data it can understand. Text data like "dog" is a sequence of ASCII character encodings.  Since a neural network is a series of multiplication and addition operations, the input data needs to be number(s).</p>
+<p>We can turn each character into a number or each word into a number.  These are called character and word ids, respectively.  Character ids are used for character level models that generate text predictions for each character.  A word level model uses word ids that generate text predictions for each word.  Word level models tend to learn better, since they are lower in complexity, so we'll use those.</p>
+<p>Turn each sentence into a sequence of words ids using Keras's <a href="https://keras.io/preprocessing/text/#tokenizer"><code>Tokenizer</code></a> function. Use this function to tokenize <code>english_sentences</code> and <code>french_sentences</code> in the cell below.</p>
 <p>Running the cell will run <code>tokenize</code> on sample data and show output for debugging.</p>
 
 </div>
@@ -12034,7 +12031,7 @@ small_vocab_fr Line 2:  les états-unis est généralement froid en juillet , et
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;my&#39;: 12, &#39;quick&#39;: 2, &#39;jove&#39;: 11, &#39;jumps&#39;: 6, &#39;over&#39;: 7, &#39;short&#39;: 20, &#39;of&#39;: 14, &#39;by&#39;: 10, &#39;brown&#39;: 4, &#39;study&#39;: 13, &#39;the&#39;: 1, &#39;this&#39;: 18, &#39;lexicography&#39;: 15, &#39;lazy&#39;: 8, &#39;fox&#39;: 5, &#39;sentence&#39;: 21, &#39;dog&#39;: 9, &#39;won&#39;: 16, &#39;a&#39;: 3, &#39;is&#39;: 19, &#39;prize&#39;: 17}
+<pre>{&#39;quick&#39;: 2, &#39;of&#39;: 14, &#39;jove&#39;: 11, &#39;lexicography&#39;: 15, &#39;sentence&#39;: 21, &#39;by&#39;: 10, &#39;won&#39;: 16, &#39;short&#39;: 20, &#39;my&#39;: 12, &#39;is&#39;: 19, &#39;dog&#39;: 9, &#39;study&#39;: 13, &#39;jumps&#39;: 6, &#39;over&#39;: 7, &#39;prize&#39;: 17, &#39;fox&#39;: 5, &#39;brown&#39;: 4, &#39;this&#39;: 18, &#39;the&#39;: 1, &#39;a&#39;: 3, &#39;lazy&#39;: 8}
 
 Sequence 1 from given Sentences
   Input:  The quick brown fox jumps over the lazy dog .
@@ -12058,7 +12055,7 @@ Sequence 3 from given Sentences
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Padding-(IMPLEMENTATION)">Padding (IMPLEMENTATION)<a class="anchor-link" href="#Padding-(IMPLEMENTATION)">&#182;</a></h3><p>When Batching the Sequence of Word IDs together, each Sequence must be same length.  Since sentences are dynamic in length, we can add Padding to the end of the sequences to make them the same length.</p>
+<h3 id="Padding-(IMPLEMENTATION)">Padding (IMPLEMENTATION)<a class="anchor-link" href="#Padding-(IMPLEMENTATION)">&#182;</a></h3><p>When batching the sequence of word ids together, each sequence needs to be the same length.  Since sentences are dynamic in length, we can add padding to the end of the sequences to make them the same length.</p>
 <p>Make sure all the English sequences have the same length and all the French sequences have the same length by adding padding to the <strong>end</strong> of each sequence using Keras's <a href="https://keras.io/preprocessing/sequence/#pad_sequences"><code>pad_sequences</code></a> function.</p>
 
 </div>
@@ -12118,6 +12115,14 @@ Sequence 3 in text_tokenized_sequences
 </div>
 </div>
 
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/carnd/anaconda3/lib/python3.5/site-packages/numpy/core/numeric.py:301: FutureWarning: in the future, full((3, 3), 0) will return an array of dtype(&#39;int32&#39;)
+  format(shape, fill_value, array(fill_value).dtype), FutureWarning)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -12127,7 +12132,7 @@ Sequence 3 in text_tokenized_sequences
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Preprocess-Pipeline">Preprocess Pipeline<a class="anchor-link" href="#Preprocess-Pipeline">&#182;</a></h3><p>Building neural network architecture is the focus (so creating a pre-process pipeline is out of scope).  Instead, the implementation of <code>preprocess</code> function is provided.</p>
+<h3 id="Preprocess-Pipeline">Preprocess Pipeline<a class="anchor-link" href="#Preprocess-Pipeline">&#182;</a></h3><p>Your focus for this project is to build neural network architecture, so we won't ask you to create a preprocess pipeline.  Instead, we've provided you with the implementation of the <code>preprocess</code> function.</p>
 
 </div>
 </div>
@@ -12187,16 +12192,16 @@ Sequence 3 in text_tokenized_sequences
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Models">Models<a class="anchor-link" href="#Models">&#182;</a></h2><p>In this section, you'll Experiment with various Neural Network Architectures.
-You'll begin training 4x Simple Architectures.</p>
+<h2 id="Models">Models<a class="anchor-link" href="#Models">&#182;</a></h2><p>In this section, you will experiment with various neural network architectures.
+You will begin by training four relatively simple architectures.</p>
 <ul>
 <li>Model 1 is a simple RNN</li>
-<li>Model 2 is a RNN with Word Embedding</li>
+<li>Model 2 is a RNN with Embedding</li>
 <li>Model 3 is a Bidirectional RNN</li>
 <li>Model 4 is an optional Encoder-Decoder RNN</li>
 </ul>
-<p>Then you'll construct a Deeper Architecture that is designed to outperform all four models.</p>
-<h3 id="Word-IDs-back-to-Text">Word IDs back to Text<a class="anchor-link" href="#Word-IDs-back-to-Text">&#182;</a></h3><p>The Neural Network will translate Input to Word IDs, which isn't the correct final form desired.  Since we want French translation, the function <code>logits_to_text</code> bridges the gap between the logits from the Neural Network to the French translation.  Use this function to better understand the Output of the Neural Network.</p>
+<p>After experimenting with the four simple architectures, you will construct a deeper architecture that is designed to outperform all four models.</p>
+<h3 id="Ids-Back-to-Text">Ids Back to Text<a class="anchor-link" href="#Ids-Back-to-Text">&#182;</a></h3><p>The neural network will be translating the input to words ids, which isn't the final form we want.  We want the French translation.  The function <code>logits_to_text</code> will bridge the gab between the logits from the neural network to the French translation.  You'll be using this function to better understand the output of the neural network.</p>
 
 </div>
 </div>
@@ -12208,13 +12213,13 @@ You'll begin training 4x Simple Architectures.</p>
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">logits_to_text</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Convert Logits from a Neural Network into Text using Tokenizer</span>
-<span class="sd">    :param logits: Logits from a Neural Network</span>
+<span class="sd">    Turn logits from a neural network into text using the tokenizer</span>
+<span class="sd">    :param logits: Logits from a neural network</span>
 <span class="sd">    :param tokenizer: Keras Tokenizer fit on the labels</span>
-<span class="sd">    :return: String that represents the Text of the Logits</span>
+<span class="sd">    :return: String that represents the text of the logits</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">index_to_words</span> <span class="o">=</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">word</span> <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-    <span class="n">index_to_words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span><span class="s1">&#39;&lt;PAD&gt;&#39;</span>
+    <span class="n">index_to_words</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;PAD&gt;&#39;</span>
 
     <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">index_to_words</span><span class="p">[</span><span class="n">prediction</span><span class="p">]</span> <span class="k">for</span> <span class="n">prediction</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">logits</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span>
 
@@ -12331,26 +12336,26 @@ Non-trainable params: 0
 _________________________________________________________________
 Train on 110288 samples, validate on 27573 samples
 Epoch 1/10
-110288/110288 [==============================] - 39s - loss: 2.8076 - acc: 0.5055 - val_loss: nan - val_acc: 0.5729
+110288/110288 [==============================] - 35s - loss: 2.7905 - acc: 0.5020 - val_loss: nan - val_acc: 0.5714
 Epoch 2/10
-110288/110288 [==============================] - 38s - loss: 2.1882 - acc: 0.5882 - val_loss: nan - val_acc: 0.6015
+110288/110288 [==============================] - 34s - loss: 2.1911 - acc: 0.5811 - val_loss: nan - val_acc: 0.5882
 Epoch 3/10
-110288/110288 [==============================] - 38s - loss: 2.0230 - acc: 0.6117 - val_loss: nan - val_acc: 0.6188
+110288/110288 [==============================] - 34s - loss: 2.0950 - acc: 0.5940 - val_loss: nan - val_acc: 0.6023
 Epoch 4/10
-110288/110288 [==============================] - 38s - loss: 1.9498 - acc: 0.6239 - val_loss: nan - val_acc: 0.6294
+110288/110288 [==============================] - 34s - loss: 2.0274 - acc: 0.6067 - val_loss: nan - val_acc: 0.6095
 Epoch 5/10
-110288/110288 [==============================] - 38s - loss: 1.8978 - acc: 0.6349 - val_loss: nan - val_acc: 0.6359
+110288/110288 [==============================] - 34s - loss: 1.9721 - acc: 0.6178 - val_loss: nan - val_acc: 0.6249
 Epoch 6/10
-110288/110288 [==============================] - 38s - loss: 1.8601 - acc: 0.6411 - val_loss: nan - val_acc: 0.6454
+110288/110288 [==============================] - 34s - loss: 1.9305 - acc: 0.6242 - val_loss: nan - val_acc: 0.6294
 Epoch 7/10
-110288/110288 [==============================] - 38s - loss: 1.8315 - acc: 0.6453 - val_loss: nan - val_acc: 0.6479
+110288/110288 [==============================] - 34s - loss: 1.9005 - acc: 0.6285 - val_loss: nan - val_acc: 0.6339
 Epoch 8/10
-110288/110288 [==============================] - 38s - loss: 1.8073 - acc: 0.6497 - val_loss: nan - val_acc: 0.6526
+110288/110288 [==============================] - 34s - loss: 1.8740 - acc: 0.6346 - val_loss: nan - val_acc: 0.6386
 Epoch 9/10
-110288/110288 [==============================] - 38s - loss: 1.7839 - acc: 0.6542 - val_loss: nan - val_acc: 0.6498
+110288/110288 [==============================] - 34s - loss: 1.8506 - acc: 0.6400 - val_loss: nan - val_acc: 0.6456
 Epoch 10/10
-110288/110288 [==============================] - 38s - loss: 1.7612 - acc: 0.6598 - val_loss: nan - val_acc: 0.6586
-paris jersey est parfois parfois en mois de mai et il est en en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+110288/110288 [==============================] - 34s - loss: 1.8272 - acc: 0.6477 - val_loss: nan - val_acc: 0.6531
+new est est parfois humide en l&#39; et il est il est en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 </pre>
 </div>
 </div>
@@ -12365,7 +12370,7 @@ paris jersey est parfois parfois en mois de mai et il est en en &lt;PAD&gt; &lt;
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Model-2:-Embedding-(IMPLEMENTATION)">Model 2: Embedding (IMPLEMENTATION)<a class="anchor-link" href="#Model-2:-Embedding-(IMPLEMENTATION)">&#182;</a></h3><p><img src="images/embedding.png" alt="RNN">
-Previously we converted Words into Word IDs, however Word Embeddings provide better representation of Words. Word Embeddings are a Vector representation of the Word that is close to similar words in n-dimensional space, where the n represents the size of the Word Embedding vectors.</p>
+You've turned the words into ids, but there's a better representation of a word.  This is called word embeddings.  An embedding is a vector representation of the word that is close to similar words in n-dimensional space, where the n represents the size of the embedding vectors.</p>
 <p>In this model, you'll create a RNN model using embedding.</p>
 
 </div>
@@ -12389,37 +12394,38 @@ Previously we converted Words into Word IDs, however Word Embeddings provide bet
 <span class="sd">    :return: Keras model built, but not trained</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Implement</span>
+   
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">output_sequence_length</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
-    
-    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">output_dim</span><span class="o">=</span><span class="n">output_sequence_length</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">GRU</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">))(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+  
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
     
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">sparse_categorical_crossentropy</span><span class="p">,</span>
                   <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">),</span>
-                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>    
+    <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">model</span>
 <span class="n">tests</span><span class="o">.</span><span class="n">test_embed_model</span><span class="p">(</span><span class="n">embed_model</span><span class="p">)</span>
 
 
 <span class="c1"># TODO: Reshape the input</span>
 <span class="n">tmp_x</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">preproc_english_sentences</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1"># tmp_x = tmp_x.reshape((-1, preproc_french_sentences.shape[-2], 1))</span>
+<span class="n">tmp_x</span> <span class="o">=</span> <span class="n">tmp_x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]))</span>
 
 <span class="c1"># TODO: Train the neural network</span>
-<span class="n">embedding_rnn_model</span> <span class="o">=</span> <span class="n">embed_model</span><span class="p">(</span>
+<span class="n">embed_rnn_model</span> <span class="o">=</span> <span class="n">embed_model</span><span class="p">(</span>
     <span class="n">tmp_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
     <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">english_tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">),</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">french_tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">))</span>
-<span class="n">embedding_rnn_model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-<span class="n">embedding_rnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">embed_rnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
 <span class="c1"># TODO: Print prediction(s)</span>
-<span class="n">tmp_x</span> <span class="o">=</span> <span class="n">tmp_x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">logits_to_text</span><span class="p">(</span><span class="n">simple_rnn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">french_tokenizer</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">logits_to_text</span><span class="p">(</span><span class="n">embed_rnn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">[:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">french_tokenizer</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -12431,46 +12437,66 @@ Previously we converted Words into Word IDs, however Word Embeddings provide bet
 
 
 <div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/carnd/anaconda3/lib/python3.5/site-packages/ipykernel/__main__.py:19: UserWarning: Update your `Model` call to the Keras 2 API: `Model(outputs=Tensor(&#34;ti..., inputs=Tensor(&#34;in...)`
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_3 (InputLayer)         (None, 21)                0         
+_________________________________________________________________
+embedding_1 (Embedding)      (None, 21, 21)            4179      
+_________________________________________________________________
+gru_3 (GRU)                  (None, 21, 1024)          3213312   
+_________________________________________________________________
+time_distributed_3 (TimeDist (None, 21, 344)           352600    
+=================================================================
+Total params: 3,570,091
+Trainable params: 3,570,091
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
 input_4 (InputLayer)         (None, 21)                0         
 _________________________________________________________________
 embedding_2 (Embedding)      (None, 21, 21)            4179      
 _________________________________________________________________
-gru_4 (GRU)                  (None, 21, 512)           820224    
+gru_4 (GRU)                  (None, 21, 1024)          3213312   
 _________________________________________________________________
-time_distributed_4 (TimeDist (None, 21, 344)           176472    
-_________________________________________________________________
-activation_4 (Activation)    (None, 21, 344)           0         
+time_distributed_4 (TimeDist (None, 21, 344)           352600    
 =================================================================
-Total params: 1,000,875
-Trainable params: 1,000,875
+Total params: 3,570,091
+Trainable params: 3,570,091
 Non-trainable params: 0
 _________________________________________________________________
 Train on 110288 samples, validate on 27573 samples
 Epoch 1/10
-110288/110288 [==============================] - 40s - loss: 3.3714 - acc: 0.4325 - val_loss: nan - val_acc: 0.4849
+110288/110288 [==============================] - 85s - loss: 3.3848 - acc: 0.4283 - val_loss: nan - val_acc: 0.5004
 Epoch 2/10
-110288/110288 [==============================] - 40s - loss: 2.5385 - acc: 0.5129 - val_loss: nan - val_acc: 0.5557
+110288/110288 [==============================] - 84s - loss: 2.3555 - acc: 0.5236 - val_loss: nan - val_acc: 0.5553
 Epoch 3/10
-110288/110288 [==============================] - 40s - loss: 1.9209 - acc: 0.5980 - val_loss: nan - val_acc: 0.6299
+110288/110288 [==============================] - 84s - loss: 1.9892 - acc: 0.5680 - val_loss: nan - val_acc: 0.5877
 Epoch 4/10
-110288/110288 [==============================] - 40s - loss: 1.6029 - acc: 0.6631 - val_loss: nan - val_acc: 0.6907
+110288/110288 [==============================] - 84s - loss: 1.8341 - acc: 0.5965 - val_loss: nan - val_acc: 0.6059
 Epoch 5/10
-110288/110288 [==============================] - 40s - loss: 1.3529 - acc: 0.7135 - val_loss: nan - val_acc: 0.7375
+110288/110288 [==============================] - 84s - loss: 1.7364 - acc: 0.6138 - val_loss: nan - val_acc: 0.6240
 Epoch 6/10
-110288/110288 [==============================] - 40s - loss: 1.1409 - acc: 0.7643 - val_loss: nan - val_acc: 0.7851
+110288/110288 [==============================] - 84s - loss: 1.6821 - acc: 0.6246 - val_loss: nan - val_acc: 0.6292
 Epoch 7/10
-110288/110288 [==============================] - 40s - loss: 0.9887 - acc: 0.7982 - val_loss: nan - val_acc: 0.8084
+110288/110288 [==============================] - 84s - loss: 1.6023 - acc: 0.6402 - val_loss: nan - val_acc: 0.6512
 Epoch 8/10
-110288/110288 [==============================] - 40s - loss: 0.8962 - acc: 0.8183 - val_loss: nan - val_acc: 0.8258
+110288/110288 [==============================] - 84s - loss: 1.5737 - acc: 0.6478 - val_loss: nan - val_acc: 0.6526
 Epoch 9/10
-110288/110288 [==============================] - 40s - loss: 0.8382 - acc: 0.8302 - val_loss: nan - val_acc: 0.8355
+110288/110288 [==============================] - 84s - loss: 1.5372 - acc: 0.6621 - val_loss: nan - val_acc: 0.6530
 Epoch 10/10
-110288/110288 [==============================] - 40s - loss: 0.7932 - acc: 0.8402 - val_loss: nan - val_acc: 0.8445
-paris jersey est parfois parfois en mois de mai et il est en en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+110288/110288 [==============================] - 84s - loss: 1.4502 - acc: 0.6829 - val_loss: nan - val_acc: 0.6841
+new jersey est jamais chaud au l&#39; automne et est jamais est en janvier &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 </pre>
 </div>
 </div>
@@ -12509,37 +12535,35 @@ One restriction of a RNN is that it can't see the future input, only the past.  
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Implement</span>
     <span class="n">inputs</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">inputs</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">inputs</span><span class="p">)</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">))(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span><span class="n">output</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
     
-    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
     
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">sparse_categorical_crossentropy</span><span class="p">,</span>
                   <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">),</span>
-                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>    
     <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">model</span>
 <span class="n">tests</span><span class="o">.</span><span class="n">test_bd_model</span><span class="p">(</span><span class="n">bd_model</span><span class="p">)</span>
 
 
 <span class="c1"># TODO: Train and Print prediction(s)</span>
-
-<span class="c1"># Reshaping the input to work with a basic RNN</span>
+<span class="c1"># Reshape Input</span>
 <span class="n">tmp_x</span> <span class="o">=</span> <span class="n">pad</span><span class="p">(</span><span class="n">preproc_english_sentences</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">tmp_x</span> <span class="o">=</span> <span class="n">tmp_x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">tmp_x</span> <span class="o">=</span> <span class="n">tmp_x</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="c1"># Train the neural network</span>
-<span class="n">simple_rnn_model</span> <span class="o">=</span> <span class="n">simple_model</span><span class="p">(</span>
+<span class="c1"># Train the RNN</span>
+<span class="n">bd_rnn_model</span> <span class="o">=</span> <span class="n">bd_model</span><span class="p">(</span>
     <span class="n">tmp_x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
     <span class="n">preproc_french_sentences</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">english_tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">),</span>
     <span class="nb">len</span><span class="p">(</span><span class="n">french_tokenizer</span><span class="o">.</span><span class="n">word_index</span><span class="p">))</span>
-<span class="n">simple_rnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">bd_rnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">,</span> <span class="n">preproc_french_sentences</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 
-<span class="c1"># Print prediction(s)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">logits_to_text</span><span class="p">(</span><span class="n">simple_rnn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">[:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">french_tokenizer</span><span class="p">))</span>
+<span class="c1"># Print Predictions</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">logits_to_text</span><span class="p">(</span><span class="n">bd_rnn_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">tmp_x</span><span class="p">[:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">french_tokenizer</span><span class="p">))</span>
 </pre></div>
 
 </div>
@@ -12551,48 +12575,107 @@ One restriction of a RNN is that it can't see the future input, only the past.  
 
 
 <div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/carnd/anaconda3/lib/python3.5/site-packages/ipykernel/__main__.py:17: UserWarning: Update your `Model` call to the Keras 2 API: `Model(outputs=Tensor(&#34;ti..., inputs=Tensor(&#34;in...)`
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
 input_5 (InputLayer)         (None, 21, 1)             0         
 _________________________________________________________________
-bidirectional_1 (Bidirection (None, 21, 1024)          1579008   
+bidirectional_1 (Bidirection (None, 21, 2048)          6303744   
 _________________________________________________________________
-time_distributed_5 (TimeDist (None, 21, 344)           352600    
-_________________________________________________________________
-activation_5 (Activation)    (None, 21, 344)           0         
+time_distributed_5 (TimeDist (None, 21, 344)           704856    
 =================================================================
-Total params: 1,931,608
-Trainable params: 1,931,608
+Total params: 7,008,600
+Trainable params: 7,008,600
+Non-trainable params: 0
+_________________________________________________________________
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+input_6 (InputLayer)         (None, 21, 1)             0         
+_________________________________________________________________
+bidirectional_2 (Bidirection (None, 21, 2048)          6303744   
+_________________________________________________________________
+time_distributed_6 (TimeDist (None, 21, 344)           704856    
+=================================================================
+Total params: 7,008,600
+Trainable params: 7,008,600
 Non-trainable params: 0
 _________________________________________________________________
 Train on 110288 samples, validate on 27573 samples
 Epoch 1/10
-110288/110288 [==============================] - 39s - loss: 2.8715 - acc: 0.4937 - val_loss: nan - val_acc: 0.5539
+110288/110288 [==============================] - 165s - loss: 2.7982 - acc: 0.5646 - val_loss: nan - val_acc: 0.6494
 Epoch 2/10
-110288/110288 [==============================] - 38s - loss: 2.3254 - acc: 0.5658 - val_loss: nan - val_acc: 0.5770
+110288/110288 [==============================] - 164s - loss: 1.9907 - acc: 0.6616 - val_loss: nan - val_acc: 0.6817
 Epoch 3/10
-110288/110288 [==============================] - 38s - loss: 2.2272 - acc: 0.5824 - val_loss: nan - val_acc: 0.5877
+110288/110288 [==============================] - 164s - loss: 1.8876 - acc: 0.6828 - val_loss: nan - val_acc: 0.6836
 Epoch 4/10
-110288/110288 [==============================] - 38s - loss: 2.1749 - acc: 0.5888 - val_loss: nan - val_acc: 0.5916
+110288/110288 [==============================] - 164s - loss: 1.8287 - acc: 0.6954 - val_loss: nan - val_acc: 0.7040
 Epoch 5/10
-110288/110288 [==============================] - 38s - loss: 2.1329 - acc: 0.5979 - val_loss: nan - val_acc: 0.6024
+110288/110288 [==============================] - 164s - loss: 1.7459 - acc: 0.7197 - val_loss: nan - val_acc: 0.7380
 Epoch 6/10
-110288/110288 [==============================] - 38s - loss: 2.0990 - acc: 0.6042 - val_loss: nan - val_acc: 0.6090
+110288/110288 [==============================] - 164s - loss: 1.7436 - acc: 0.7180 - val_loss: nan - val_acc: 0.7212
 Epoch 7/10
-110288/110288 [==============================] - 38s - loss: 2.0728 - acc: 0.6091 - val_loss: nan - val_acc: 0.6112
+110288/110288 [==============================] - 164s - loss: 1.6866 - acc: 0.7326 - val_loss: nan - val_acc: 0.7288
 Epoch 8/10
-110288/110288 [==============================] - 38s - loss: 2.0497 - acc: 0.6134 - val_loss: nan - val_acc: 0.6241
+110288/110288 [==============================] - 164s - loss: 1.6197 - acc: 0.7468 - val_loss: nan - val_acc: 0.7394
 Epoch 9/10
-110288/110288 [==============================] - 38s - loss: 2.0271 - acc: 0.6198 - val_loss: nan - val_acc: 0.6162
+110288/110288 [==============================] - 164s - loss: 1.5684 - acc: 0.7615 - val_loss: nan - val_acc: 0.7605
 Epoch 10/10
-110288/110288 [==============================] - 38s - loss: 2.0081 - acc: 0.6252 - val_loss: nan - val_acc: 0.6274
-new jersey est généralement humide en l&#39; et il est il est en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+110288/110288 [==============================] - 164s - loss: 1.5766 - acc: 0.7594 - val_loss: nan - val_acc: 0.7282
+new jersey est parfois calme pendant mois et et et neigeux en en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 </pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Model-4:-Encoder-Decoder-(OPTIONAL)">Model 4: Encoder-Decoder (OPTIONAL)<a class="anchor-link" href="#Model-4:-Encoder-Decoder-(OPTIONAL)">&#182;</a></h3><p>Time to look at encoder-decoder models.  This model is made up of an encoder and decoder. The encoder creates a matrix representation of the sentence.  The decoder takes this matrix as input and predicts the translation as output.</p>
+<p>Create an encoder-decoder model in the cell below.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">RepeatVector</span>
+
+
+<span class="k">def</span> <span class="nf">encdec_model</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">output_sequence_length</span><span class="p">,</span> <span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">french_vocab_size</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build and train an encoder-decoder model on x and y</span>
+<span class="sd">    :param input_shape: Tuple of input shape</span>
+<span class="sd">    :param output_sequence_length: Length of output sequence</span>
+<span class="sd">    :param english_vocab_size: Number of unique English words in the dataset</span>
+<span class="sd">    :param french_vocab_size: Number of unique French words in the dataset</span>
+<span class="sd">    :return: Keras model built, but not trained</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># OPTIONAL: Implement</span>
+    <span class="k">return</span> <span class="kc">None</span>
+<span class="n">tests</span><span class="o">.</span><span class="n">test_encdec_model</span><span class="p">(</span><span class="n">encdec_model</span><span class="p">)</span>
+
+
+<span class="c1"># OPTIONAL: Train and Print prediction(s)</span>
+</pre></div>
+
+</div>
 </div>
 </div>
 
@@ -12609,10 +12692,11 @@ new jersey est généralement humide en l&#39; et il est il est en &lt;PAD&gt; &
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">RepeatVector</span>
+<span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 
 <span class="k">def</span> <span class="nf">model_final</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">output_sequence_length</span><span class="p">,</span> <span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">french_vocab_size</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -12624,24 +12708,24 @@ new jersey est généralement humide en l&#39; et il est il est en &lt;PAD&gt; &
 <span class="sd">    :return: Keras model built, but not trained</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># TODO: Implement</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">input_shape</span><span class="p">,</span> <span class="n">output_sequence_length</span><span class="p">,</span> <span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">french_vocab_size</span><span class="p">)</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">Input</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">Embedding</span><span class="p">(</span><span class="n">english_vocab_size</span><span class="p">,</span> <span class="n">output_sequence_length</span><span class="p">)(</span><span class="n">inputs</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">RepeatVector</span><span class="p">(</span><span class="n">output_sequence_length</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;relu&quot;</span><span class="p">))(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">outputs</span> <span class="o">=</span> <span class="n">Activation</span><span class="p">(</span><span class="s1">&#39;softmax&#39;</span><span class="p">)(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">)</span>
+    
 
+    <span class="n">model_final</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+    <span class="n">model_final</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Embedding</span><span class="p">(</span><span class="n">english_vocab_size</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">input_length</span><span class="o">=</span><span class="n">input_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">model_final</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">False</span><span class="p">)))</span>
+    <span class="n">model_final</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">RepeatVector</span><span class="p">(</span><span class="n">output_sequence_length</span><span class="p">))</span>
+    <span class="n">model_final</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Bidirectional</span><span class="p">(</span><span class="n">GRU</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="n">return_sequences</span><span class="o">=</span><span class="kc">True</span><span class="p">)))</span>  
+    <span class="n">model_final</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">TimeDistributed</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">french_vocab_size</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s2">&quot;softmax&quot;</span><span class="p">)))</span>
+    
     <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.001</span>
     
-    <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">sparse_categorical_crossentropy</span><span class="p">,</span>
+    <span class="n">model_final</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">sparse_categorical_crossentropy</span><span class="p">,</span>
                   <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(</span><span class="n">learning_rate</span><span class="p">),</span>
-                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>    
-    <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">model</span>
+                  <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>       
+    <span class="n">model_final</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">model_final</span>
 <span class="n">tests</span><span class="o">.</span><span class="n">test_model_final</span><span class="p">(</span><span class="n">model_final</span><span class="p">)</span>
+
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final Model Loaded&#39;</span><span class="p">)</span>
 </pre></div>
@@ -12656,26 +12740,21 @@ new jersey est généralement humide en l&#39; et il est il est en &lt;PAD&gt; &
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(137861, 15) 21 199 344
-_________________________________________________________________
+<pre>_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-input_7 (InputLayer)         (None, 15)                0         
+embedding_3 (Embedding)      (None, 15, 256)           50944     
 _________________________________________________________________
-embedding_3 (Embedding)      (None, 15, 21)            4179      
-_________________________________________________________________
-bidirectional_2 (Bidirection (None, 1024)              1640448   
+bidirectional_3 (Bidirection (None, 1024)              2362368   
 _________________________________________________________________
 repeat_vector_1 (RepeatVecto (None, 21, 1024)          0         
 _________________________________________________________________
-bidirectional_3 (Bidirection (None, 21, 1024)          4721664   
+bidirectional_4 (Bidirection (None, 21, 1024)          4721664   
 _________________________________________________________________
 time_distributed_7 (TimeDist (None, 21, 344)           352600    
-_________________________________________________________________
-activation_7 (Activation)    (None, 21, 344)           0         
 =================================================================
-Total params: 6,718,891
-Trainable params: 6,718,891
+Total params: 7,487,576
+Trainable params: 7,487,576
 Non-trainable params: 0
 _________________________________________________________________
 Final Model Loaded
@@ -12698,11 +12777,12 @@ Final Model Loaded
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">keras.preprocessing.sequence</span> <span class="k">import</span> <span class="n">pad_sequences</span>
+
 
 <span class="k">def</span> <span class="nf">final_predictions</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x_tk</span><span class="p">,</span> <span class="n">y_tk</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -12712,25 +12792,19 @@ Final Model Loaded
 <span class="sd">    :param x_tk: English tokenizer</span>
 <span class="sd">    :param y_tk: French tokenizer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Train neural network using model_final</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="n">model_final</span><span class="p">(</span>
-        <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="c1">#tmp_x.shape, # x.shape,</span>
-        <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="c1"># preproc_french_sentences.shape[1],</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">x_tk</span><span class="o">.</span><span class="n">word_index</span><span class="p">),</span> <span class="c1"># len(english_tokenizer.word_index),</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">y_tk</span><span class="o">.</span><span class="n">word_index</span><span class="p">),</span> <span class="c1"># len(french_tokenizer.word_index)</span>
-    <span class="p">)</span>
+    <span class="c1"># TODO: Train neural network using model_final</span>
+
+    <span class="n">final_rnn_model</span> <span class="o">=</span> <span class="n">model_final</span><span class="p">(</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">x_tk</span><span class="o">.</span><span class="n">word_index</span><span class="p">),</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">y_tk</span><span class="o">.</span><span class="n">word_index</span><span class="p">))</span>
+    <span class="n">final_rnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
     
-    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-        <span class="n">x</span><span class="p">,</span> <span class="c1"># tmp_x, # x</span>
-        <span class="n">y</span><span class="p">,</span> <span class="c1"># preproc_french_sentences, </span>
-        <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">,</span> 
-        <span class="n">epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> 
-        <span class="n">validation_split</span><span class="o">=</span><span class="mf">0.2</span>
-    <span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">final_rnn_model</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 
-    <span class="c1"># Print prediction(s)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">logits_to_text</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="mi">1</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y_tk</span><span class="p">))</span>
-
+    
     <span class="c1">## DON&#39;T EDIT ANYTHING BELOW THIS LINE</span>
     <span class="n">y_id_to_word</span> <span class="o">=</span> <span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">y_tk</span><span class="o">.</span><span class="n">word_index</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="n">y_id_to_word</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;PAD&gt;&#39;</span>
@@ -12762,55 +12836,66 @@ Final Model Loaded
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>(137861, 15) 21 199 344
-_________________________________________________________________
+<pre>_________________________________________________________________
 Layer (type)                 Output Shape              Param #   
 =================================================================
-input_8 (InputLayer)         (None, 15)                0         
+embedding_4 (Embedding)      (None, 15, 256)           50944     
 _________________________________________________________________
-embedding_4 (Embedding)      (None, 15, 21)            4179      
-_________________________________________________________________
-bidirectional_4 (Bidirection (None, 1024)              1640448   
+bidirectional_5 (Bidirection (None, 1024)              2362368   
 _________________________________________________________________
 repeat_vector_2 (RepeatVecto (None, 21, 1024)          0         
 _________________________________________________________________
-bidirectional_5 (Bidirection (None, 21, 1024)          4721664   
+bidirectional_6 (Bidirection (None, 21, 1024)          4721664   
 _________________________________________________________________
 time_distributed_8 (TimeDist (None, 21, 344)           352600    
-_________________________________________________________________
-activation_8 (Activation)    (None, 21, 344)           0         
 =================================================================
-Total params: 6,718,891
-Trainable params: 6,718,891
+Total params: 7,487,576
+Trainable params: 7,487,576
 Non-trainable params: 0
 _________________________________________________________________
 Train on 110288 samples, validate on 27573 samples
 Epoch 1/10
-110288/110288 [==============================] - 166s - loss: 3.0861 - acc: 0.4575 - val_loss: nan - val_acc: 0.5048
+110288/110288 [==============================] - 153s - loss: 2.3349 - acc: 0.4947 - val_loss: nan - val_acc: 0.5930
 Epoch 2/10
-110288/110288 [==============================] - 165s - loss: 2.2710 - acc: 0.5427 - val_loss: nan - val_acc: 0.5876
+110288/110288 [==============================] - 152s - loss: 1.3611 - acc: 0.6389 - val_loss: nan - val_acc: 0.6787
 Epoch 3/10
-110288/110288 [==============================] - 165s - loss: 1.9715 - acc: 0.6035 - val_loss: nan - val_acc: 0.6287
+110288/110288 [==============================] - 152s - loss: 1.0183 - acc: 0.7161 - val_loss: nan - val_acc: 0.7457
 Epoch 4/10
-110288/110288 [==============================] - 165s - loss: 1.8677 - acc: 0.6319 - val_loss: nan - val_acc: 0.6572
+110288/110288 [==============================] - 152s - loss: 0.7992 - acc: 0.7665 - val_loss: nan - val_acc: 0.7805
 Epoch 5/10
-110288/110288 [==============================] - 166s - loss: 1.7326 - acc: 0.6673 - val_loss: nan - val_acc: 0.6798
+110288/110288 [==============================] - 152s - loss: 0.6366 - acc: 0.8115 - val_loss: nan - val_acc: 0.8312
 Epoch 6/10
-110288/110288 [==============================] - 165s - loss: 1.6726 - acc: 0.6806 - val_loss: nan - val_acc: 0.5528
+110288/110288 [==============================] - 152s - loss: 0.4910 - acc: 0.8550 - val_loss: nan - val_acc: 0.8743
 Epoch 7/10
-110288/110288 [==============================] - 165s - loss: 1.6166 - acc: 0.6873 - val_loss: nan - val_acc: 0.7070
+110288/110288 [==============================] - 152s - loss: 0.3779 - acc: 0.8884 - val_loss: nan - val_acc: 0.9025
 Epoch 8/10
-110288/110288 [==============================] - 165s - loss: 1.4977 - acc: 0.7126 - val_loss: nan - val_acc: 0.7199
+110288/110288 [==============================] - 152s - loss: 0.2950 - acc: 0.9138 - val_loss: nan - val_acc: 0.9272
 Epoch 9/10
-110288/110288 [==============================] - 165s - loss: 1.4276 - acc: 0.7307 - val_loss: nan - val_acc: 0.7374
+110288/110288 [==============================] - 152s - loss: 0.2316 - acc: 0.9326 - val_loss: nan - val_acc: 0.9392
 Epoch 10/10
-110288/110288 [==============================] - 166s - loss: 1.3714 - acc: 0.7443 - val_loss: nan - val_acc: 0.7502
-new france est parfois agréable à l&#39; et et il est il en en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+110288/110288 [==============================] - 152s - loss: 0.1838 - acc: 0.9458 - val_loss: nan - val_acc: 0.9494
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+embedding_4 (Embedding)      (None, 15, 256)           50944     
+_________________________________________________________________
+bidirectional_5 (Bidirection (None, 1024)              2362368   
+_________________________________________________________________
+repeat_vector_2 (RepeatVecto (None, 21, 1024)          0         
+_________________________________________________________________
+bidirectional_6 (Bidirection (None, 21, 1024)          4721664   
+_________________________________________________________________
+time_distributed_8 (TimeDist (None, 21, 344)           352600    
+=================================================================
+Total params: 7,487,576
+Trainable params: 7,487,576
+Non-trainable params: 0
+_________________________________________________________________
 Sample 1:
-il il pas la et les &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+il a vu un vieux camion jaune &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 Il a vu un vieux camion jaune
 Sample 2:
-new france est parfois agréable à l&#39; et et il est il en en &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
+new jersey est parfois calme pendant l&#39; automne et il est neigeux en avril &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt; &lt;PAD&gt;
 </pre>
 </div>
